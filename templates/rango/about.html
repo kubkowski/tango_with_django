@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>About</title>
+    </head>
+
+    <body>
+        <h1>About page</h1>
+        <a href="/rango/">Link to index page</a>
+        <img src="{% static "rango.jpg" %}" alt="Picture of Rango" />
+        <p>{{ message }}</p>
+    </body>
+
+</html>
