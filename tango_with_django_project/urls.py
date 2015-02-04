@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'tango_with_django_project.views.home', name='home'),
