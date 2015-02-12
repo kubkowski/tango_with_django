@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Rango</title>
-</head>
-<body>
-    <h1>Add a Category</h1>
-    
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Add Category{% endblock %}
+
+{% block body_block %}
     {% if user.is_authenticated %}
-        <form id="category_form" method="post" action="/rango/add_category/">
+        <form id="category_form" method="post" action="{% url 'add_category' %}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -25,9 +23,6 @@
     {% else %}
 
         <p>Only registered users can add category!</p>
-        <a href="/rango/register/">Register Here</a><br />
-        <a href="/rango/login/">Login</a><br />
 
     {% endif %}
-</body>
-</html>
+{% endblock %}
