@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from rango.models import Category, Page
@@ -125,6 +125,20 @@ def search(request):
             result_list = run_query(query)
 
     return render(request, 'rango/search.html', {'result_list': result_list})
+
+def track_url(request):
+    if request.method == 'GET':
+        if 'page_id' in request.GET:
+            page_id = request.GET['page_id']
+            page = Page.objects.get(id=page_id)
+            page.views = page.views + 1
+            page.save()
+            return redirect(page.url)
+
+
+    return redirect('/rango/')
+
+
 
 
 
