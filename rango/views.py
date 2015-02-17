@@ -131,9 +131,27 @@ def track_url(request):
             page.views = page.views + 1
             page.save()
             return redirect(page.url)
-
-
     return redirect('/rango/')
+
+def register_profile(request):
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST)
+
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return index(request)
+        else:
+            print form.errors
+
+    else:
+        form = UserProfileForm()
+
+    return render(request, 'registration/profile_registration.html', {'form' : form})
+
+
 
 
 

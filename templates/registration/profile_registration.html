@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+{% block body_block %}
+    <form class="form" id="user_profile_form" method="post" action="{% url 'add_profile' %}">
+        <h2 class="form-signin-heading">Update your data</h2>
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}<br/>
+            {{ field }}<br/>
+        {% endfor %}
+        <br/>
+        <button class="btn btn-primary btn-block" type="submit">Update</button>
+    </form>
+
+{% endblock %}
