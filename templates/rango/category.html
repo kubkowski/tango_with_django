@@ -12,7 +12,14 @@
         {% if pages %}
         <ul>
                 {% for page in pages %}
-                <li><a href="{% url 'goto' %}?page_id={{ page.id }}">{{ page.title }}</a></li>
+                <li>
+                    <a href="{% url 'goto' %}?page_id={{ page.id }}">{{ page.title }}</a>
+                    {% if page.views > 1 %}
+                        ({{ page.views }} views)
+                    {% elif page.views == 1 %}
+                        ({{ page.views }} view)
+        {% endif %}
+                </li>
                 {% endfor %}
                 </ul>
         {% else %}
@@ -28,7 +35,7 @@
                 <br />
                 <form class="form-inline" id="user_form" method="post" action="{% url 'category' category.slug %}">
                     {% csrf_token %}
-                    <input type="text" size="50" name="query" value ="" class="form-control" id="query" />
+                    <input type="text" size="50" name="query" value ="{{query}}" class="form-control" id="query" />
                     <input type="submit" class="btn btn-primary" name="submit" value="Search">
                     <br />
                 </form>
