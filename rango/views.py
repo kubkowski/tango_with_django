@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
-from rango.models import Category, Page
+from rango.models import Category, Page, UserProfile
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from rango.bing_search import run_query
 from datetime import datetime
+from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request):
@@ -150,6 +151,20 @@ def register_profile(request):
         form = UserProfileForm()
 
     return render(request, 'registration/profile_registration.html', {'form' : form})
+
+def profile(request):
+
+    context_dict = {}
+
+    user = User.objects.get(username=request.user)
+    userprofile = UserProfile.objects.get(user=request.user)
+
+    context_dict['username'] = user.username
+    context_dict['email'] = user.email
+    context_dict['picture'] = userprofile.picture
+    context_dict['website'] = userprofile.website
+
+    return render(request, 'rango/profile.html', context_dict)
 
 
 

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ username }}{% endblock %}
+
+{% block body_block %}
+    <div class="page-header">
+        <h1>{{ username }}</h1>
+    </div>
+    <p>E-mail: {{ email }}</p>
+    <p>Picture: {{ picture }}</p>
+    <p>Website: {{ website }}</p>
+
+
+
+
+{% endblock %}
