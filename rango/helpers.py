@@ -10,3 +10,10 @@ def get_category_list(max_results=0, starts_with=''):
             cat_list = cat_list[:max_results]
 
     return cat_list
+
+def add_cat(name, view, likes):
+    c = Category.objects.get_or_create(name=name)[0]
+    c.view = view
+    c.likes = likes
+    c.save()
+    return c
