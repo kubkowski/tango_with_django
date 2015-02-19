@@ -6,6 +6,7 @@ from django.template import RequestContext
 from rango.models import Category, Page, UserProfile
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from rango.bing_search import run_query
+from rango.helpers import get_category_list
 from datetime import datetime
 from django.contrib.auth.models import User
 
@@ -194,6 +195,19 @@ def like_category(request):
             cat.save()
 
     return HttpResponse(likes)
+
+def suggest_category(request):
+
+    cat_list = []
+    starts_with = ''
+
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+
+    cat_list = get_category_list(8, starts_with)
+
+    return render(request, 'rango/category_list.html', {'cat_list': cat_list})
+
 
 
 
