@@ -115,6 +115,8 @@ def add_page(request, category_name_slug):
                 page = form.save(commit=False)
                 page.category = cat
                 page.views = 0
+                page.first_visit = None
+                page.last_visit = None
                 page.save()
                 # probably better to use a redirect here.
                 return category(request, category_name_slug)
@@ -139,6 +141,9 @@ def track_url(request):
             page_id = request.GET['page_id']
             try:
                 page = Page.objects.get(id=page_id)
+                if page.views == 0:
+                    page.first_visit = datetime.now()
+                page.last_visit = datetime.now()
                 page.views = page.views + 1
                 page.save()
                 url = page.url

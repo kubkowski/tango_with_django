@@ -1,6 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from datetime import datetime
+
 
 # Create your models here.
 class Category(models.Model):
@@ -23,6 +25,17 @@ class Page(models.Model):
     title = models.CharField(max_length=128)
     url = models.URLField()
     views = models.IntegerField(default=0)
+    first_visit = models.DateTimeField(default=None)
+    last_visit = models.DateTimeField(default=None)
+
+    def save(self, *args, **kwargs):
+        if self.first_visit > datetime.now():
+            self.first_visit = datetime.now()
+        if self.last_visit > datetime.now():
+            self.last_visit = datetime.now()
+        if self.first_visit > self.last_visit:
+            self.last_visit = self.first_visit
+        super(Page, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title

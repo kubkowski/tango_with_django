@@ -1,7 +1,8 @@
 from django.test import TestCase
-from rango.models import Category
+from rango.models import Category, Page
 from rango.helpers import add_cat
 from django.core.urlresolvers import reverse
+from datetime import datetime, timedelta
 
 # Create your tests here.
 class CategoryMethodTest(TestCase):
@@ -37,4 +38,26 @@ class IndexViewTest(TestCase):
         num_cats = len(response.context['categories'])
         self.assertEqual(num_cats, 4)
 
+class PageMethodTest(TestCase):
 
+    def test_first_view_is_not_in_future(self):
+        cat = add_cat('test', 1, 1)
+        page = Page(category=cat, title='testpage', url='http://example.com',
+         views=0, first_visit= datetime.now() + timedelta(days=30), last_visit=datetime.now())
+        page.save()
+        self.assertEqual((page.first_visit <= datetime.now()), True)
+
+    def test_last_view_is_not_in_future(self):
+        cat = add_cat('test', 1, 1)
+        page = Page(category=cat, title='testpage', url='http://example.com',
+         views=0, first_visit= datetime.now(), last_visit=datetime.now() + timedelta(days=30))
+        page.save()
+        self.assertEqual((page.last_visit <= datetime.now()), True)
+
+    def test_last_visit_equal_to_or_after_the_first_visit(self):
+        cat = add_cat('test', 1, 1)
+        page = Page(category=cat, title='testpage', url='http://example.com',
+         views=0, first_visit= datetime.now() + timedelta(days=30),
+         last_visit=datetime.now() - timedelta(days=30))
+        page.save()
+        self.assertEqual((page.last_visit >= page.first_visit), True)
